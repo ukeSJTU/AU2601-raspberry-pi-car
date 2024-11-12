@@ -1,0 +1,107 @@
+# config.yaml
+
+system:
+  # 系统全局配置
+  name: "自动驾驶系统"
+  version: "1.0.0"
+  
+  logging:
+    # 日志配置
+    log_dir: "logs"  # 日志目录
+    level: "INFO"    # 日志级别：DEBUG, INFO, WARNING, ERROR
+    
+  debug:
+    # 调试配置
+    record_video: true       # 是否记录视频
+    record_data: true        # 是否记录数据
+    frame_width: 640         # 视频帧宽度
+    frame_height: 480        # 视频帧高度
+    video_fps: 30           # 视频帧率
+
+perception:
+  # 感知模块配置
+  lane_detector:
+    roi_width: 400          # 感兴趣区域宽度
+    roi_height: 100         # 感兴趣区域高度
+    threshold: 200          # 二值化阈值
+    yellow_lower: [20, 100, 100]  # 黄色检测下限 (HSV)
+    yellow_upper: [30, 255, 255]  # 黄色检测上限 (HSV)
+    
+  sign_detector:
+    model_path: "models/sign_cnn.pth"  # 模型路径
+    confidence_threshold: 0.7     # 置信度阈值
+    min_sign_area: 500           # 最小标志面积
+    max_age: 10                  # 跟踪最大帧数
+    
+  feature_fusion:
+    history_size: 5              # 历史特征数量
+    position_threshold: 50       # 位置相似度阈值
+
+planning:
+  # 规划模块配置
+  scene_manager:
+    min_scene_duration:          # 最小场景持续时间(秒)
+      cruise: 2.0
+      turn: 3.0
+      stop: 1.0
+      park: 5.0
+    turn_threshold: 0.3         # 转弯曲率阈值
+    
+  behavior_planner:
+    max_history_size: 50        # 决策历史大小
+    cruise_speed: 30            # 巡航速度(km/h)
+    emergency_decel: -3.0       # 紧急减速度(m/s²)
+    
+  path_planner:
+    lookahead_distance: 5.0     # 前瞻距离(m)
+    point_spacing: 0.5          # 路径点间距(m)
+    max_curvature: 0.5          # 最大曲率
+    max_speed: 50.0             # 最大速度(km/h)
+    min_speed: 5.0              # 最小速度(km/h)
+
+control:
+  # 控制模块配置
+  controller:
+    wheelbase: 2.8              # 轴距(m)
+    max_speed: 50.0             # 最大速度(km/h)
+    max_steering: 35            # 最大转向角(度)
+    
+    # 速度PID参数
+    speed_kp: 1.0
+    speed_ki: 0.1
+    speed_kd: 0.05
+    
+    # 转向PID参数
+    steering_kp: 1.5
+    steering_ki: 0.0
+    steering_kd: 0.1
+    
+  trajectory_generator:
+    timestep: 0.1               # 时间步长(s)
+    planning_horizon: 3.0       # 规划时域(s)
+    max_acceleration: 2.0       # 最大加速度(m/s²)
+    max_deceleration: -4.0      # 最大减速度(m/s²)
+    
+  state_estimator:
+    # 过程噪声参数
+    position_noise: 0.1
+    velocity_noise: 1.0
+    orientation_noise: 0.1
+    angular_velocity_noise: 1.0
+    
+    # 测量噪声参数
+    gps_noise: 2.0
+    imu_noise: 0.1
+
+vehicle:
+  # 车辆参数配置
+  dimensions:
+    length: 4.5                 # 车长(m)
+    width: 1.8                  # 车宽(m)
+    wheelbase: 2.8              # 轴距(m)
+    
+  limits:
+    max_speed: 50.0             # 最大速度(km/h)
+    max_acceleration: 2.0       # 最大加速度(m/s²)
+    max_deceleration: -4.0      # 最大减速度(m/s²)
+    max_steering: 35            # 最大转向角(度)
