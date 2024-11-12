@@ -5,7 +5,7 @@ from typing import Dict, Any, Optional, Tuple, List
 import numpy as np
 from .trajectory_generator import TrajectoryPoint
 from .vehicle_state import VehicleState
-from input_manager import InputManager, ManualCommand, InputMode
+from .input_manager import InputManager, ManualCommand, InputMode
 
 
 @dataclass
